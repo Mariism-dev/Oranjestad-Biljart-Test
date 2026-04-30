@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="nl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dart- en Biljartcafé Oranjestad | Breda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --amber-glow: #f59e0b;
+            --deep-brown: #1c1917;
+            --warm-cream: #fafaf9;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a09;
+            color: #e7e5e4;
+        }
+        
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass-card {
+            background: rgba(28, 25, 23, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(251, 191, 36, 0.1);
+        }
+        
+        .glow-border {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+        }
+        
+        .hero-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(217, 119, 6, 0.1) 0%, transparent 50%);
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .billiard-ball {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #374151, #111827);
+            box-shadow: 
+                inset -5px -5px 10px rgba(0,0,0,0.5),
+                inset 5px 5px 10px rgba(255,255,255,0.1),
+                0 10px 20px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        
+        .billiard-ball::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fbbf24;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .dart-board {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #1c1917 0deg 18deg, #dc2626 18deg 36deg,
+                #1c1917 36deg 54deg, #dc2626 54deg 72deg,
+                #1c1917 72deg 90deg, #dc2626 90deg 108deg,
+                #1c1917 108deg 126deg, #dc2626 126deg 144deg,
+                #1c1917 144deg 162deg, #dc2626 162deg 180deg,
+                #1c1917 180deg 198deg, #dc2626 198deg 216deg,
+                #1c1917 216deg 234deg, #dc2626 234deg 252deg,
+                #1c1917 252deg 270deg, #dc2626 270deg 288deg,
+                #1c1917 288deg 306deg, #dc2626 306deg 324deg,
+                #1c1917 324deg 342deg, #dc2626 342deg 360deg
+            );
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        
+        .dart-board::before {
+            content: '';
+            position: absolute;
+            inset: 15px;
+            border-radius: 50%;
+            background: #1c1917;
+            border: 8px solid #16a34a;
+        }
+        
+        .dart-board::after {
+            content: '';
+            position: absolute;
+            inset: 40px;
+            border-radius: 50%;
+            background: #dc2626;
+            border: 4px solid #1c1917;
+        }
+        
+        .bullseye {
+            position: absolute;
+            inset: 85px;
+            border-radius: 50%;
+            background: #16a34a;
+            z-index: 10;
+        }
+        
+        .bullseye::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            background: #dc2626;
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+        
+        .review-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fbbf24;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .menu-item {
+            border-bottom: 1px dashed rgba(251, 191, 36, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            background: rgba(251, 191, 36, 0.05);
+            padding-left: 1rem;
+        }
+        
+        .star-rating {
+            color: #fbbf24;
+        }
+        
+        .map-container {
+            filter: grayscale(0.3) contrast(1.1);
+            transition: filter 0.3s ease;
+        }
+        
+        .map-container:hover {
+            filter: grayscale(0) contrast(1);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0c0a09;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #78350f;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #92400e;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                        <i data-lucide="target" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold serif text-white tracking-wide">Oranjestad</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#over" class="nav-link text-stone-300 hover:text-amber-400 text-sm font-medium transition-colors">Over Ons</a>
+                    <a href="#faciliteiten" class="nav-link text-stone-300 hover:text-amber-400 text-sm font-medium transition-colors">Faciliteiten</a>
+                    <a href="#menu" class="nav-link text-stone-300 hover:text-amber-400 text-sm font-medium transition-colors">Menu</a>
+                    <a href="#reviews" class="nav-link text-stone-300 hover:text-amber-400 text-sm font-medium transition-colors">Reviews</a>
+                    <a href="#contact" class="px-6 py-2.5 bg-gradient-to-r from-amber-600 to-orange-700 text-white rounded-full text-sm font-medium hover:shadow-lg hover:shadow-amber-500/25 transition-all transform hover:scale-105">
+                        Route
+                    </a>
+                </div>
+                
+                <button class="md:hidden text-stone-300 hover:text-white" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-stone-900/95 backdrop-blur-lg border-t border-stone-800">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#over" class="block px-3 py-2 text-stone-300 hover:text-amber-400 hover:bg-stone-800 rounded-lg">Over Ons</a>
+                <a href="#faciliteiten" class="block px-3 py-2 text-stone-300 hover:text-amber-400 hover:bg-stone-800 rounded-lg">Faciliteiten</a>
+                <a href="#menu" class="block px-3 py-2 text-stone-300 hover:text-amber-400 hover:bg-stone-800 rounded-lg">Menu</a>
+                <a href="#reviews" class="block px-3 py-2 text-stone-300 hover:text-amber-400 hover:bg-stone-800 rounded-lg">Reviews</a>
+                <a href="#contact" class="block px-3 py-2 text-amber-400 font-medium">Route</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center hero-pattern overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 bg-gradient-to-b from-stone-950 via-stone-900/90 to-stone-950"></div>
+        <div class="absolute top-20 right-10 opacity-20 floating" style="animation-delay: 0s;">
+            <div class="dart-board">
+                <div class="bullseye"></div>
+            </div>
+        </div>
+        <div class="absolute bottom-20 left-10 opacity-20 floating" style="animation-delay: 2s;">
+            <div class="billiard-ball"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="scroll-reveal active">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium mb-8">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    Geopend tot 00:00
+                </div>
+            </div>
+            
+            <h1 class="scroll-reveal text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
+                Dart- en <br>
+                <span class="text-gradient italic">Biljartcafé</span><br>
+                <span class="text-4xl md:text-6xl lg:text-7xl">Oranjestad</span>
+            </h1>
+            
+            <p class="scroll-reveal text-lg md:text-xl text-stone-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Een gezellig bruin café in de Belcrum waar vriendschap, precisie en een goed glas samenkomen. 
+                Met 12 dartborden en 2 biljarttafels.
+            </p>
+            
+            <div class="scroll-reveal flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#contact" class="group px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-700 text-white rounded-full font-semibold hover:shadow-xl hover:shadow-amber-500/25 transition-all transform hover:scale-105 flex items-center gap-2">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    Route naar Oranjestad
+                </a>
+                <a href="tel:+31765875905" class="px-8 py-4 border border-stone-700 text-stone-300 rounded-full font-semibold hover:border-amber-500/50 hover:text-amber-400 transition-all flex items-center gap-2">
+                    <i data-lucide="phone" class="w-5 h-5"></i>
+                    076 587 5905
+                </a>
+            </div>
+            
+            <div class="scroll-reveal mt-16 flex justify-center gap-8 text-stone-500 text-sm">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+                    <span>4.3/5 (104 reviews)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="euro" class="w-4 h-4"></i>
+                    <span>€10-20 p.p.</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                    <span>Belcrum, Breda</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-stone-600"></i>
+        </div>
+    </section>
+
+    <!-- Over Ons -->
+    <section id="over" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="scroll-reveal">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                        Een echte <span class="text-gradient">Bredase</span> ontmoetingsplek
+                    </h2>
+                    <p class="text-stone-400 text-lg leading-relaxed mb-6">
+                        Dart- en Biljartcafé Oranjestad is gelegen aan de Terheijdenseweg 70 in de karakteristieke wijk de Belcrum. 
+                        Sinds jaar en dag dé plek voor dart- en biljartverenigingen, maar minstens zo geschikt voor een ontspannen avond met vrienden.
+                    </p>
+                    <p class="text-stone-400 text-lg leading-relaxed mb-8">
+                        Met maar liefst <span class="text-amber-400 font-semibold">12 dartborden</span> en <span class="text-amber-400 font-semibold">2 biljarttafels</span> 
+                        bieden we alle faciliteiten voor zowel de fanatieke sporter als de gezelligheidsmens. 
+                        Onze vriendelijke eigenaren zorgen voor de perfecte sfeer en goede achtergrondmuziek.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-card p-6 rounded-2xl">
+                            <div class="text-3xl font-bold text-amber-400 mb-1">12</div>
+                            <div class="text-stone-400 text-sm">Dartborden</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl">
+                            <div class="text-3xl font-bold text-amber-400 mb-1">2</div>
+                            <div class="text-stone-400 text-sm">Biljarttafels</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl">
+                            <div class="text-3xl font-bold text-amber-400 mb-1">4.3</div>
+                            <div class="text-stone-400 text-sm">Google Rating</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl">
+                            <div class="text-3xl font-bold text-amber-400 mb-1">10+</div>
+                            <div class="text-stone-400 text-sm">Jaren ervaring</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-reveal relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-amber-900/20">
+                        <div class="aspect-[4/5] bg-gradient-to-br from-stone-800 to-stone-900 flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-30">
+                                <div class="absolute top-10 left-10 w-32 h-32 bg-amber-500 rounded-full blur-3xl"></div>
+                                <div class="absolute bottom-10 right-10 w-40 h-40 bg-orange-600 rounded-full blur-3xl"></div>
+                            </div>
+                            <div class="relative z-10 text-center p-8">
+                                <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center shadow-lg">
+                                    <i data-lucide="coffee" class="w-12 h-12 text-white"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white serif mb-2">Sfeerbeeld</h3>
+                                <p class="text-stone-400">Gezellig, bruin & authentiek</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-gradient-to-br from-amber-600/20 to-orange-700/20 rounded-full blur-3xl -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faciliteiten -->
+    <section id="faciliteiten" class="py-24 bg-stone-900/50 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Onze <span class="text-gradient">Faciliteiten</span></h2>
+                <p class="text-stone-400 text-lg max-w-2xl mx-auto">Alles wat je nodig hebt voor een perfecte avond uit</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="scroll-reveal glass-card rounded-3xl p-8 hover:glow-border transition-all duration-300 group">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-700/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="target" class="w-8 h-8 text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 serif">12 Dartborden</h3>
+                    <p class="text-stone-400 leading-relaxed">
+                        Professioneel opgestelde dartborden voor zowel recreatief spel als competities. Aangesloten bij de Nederlandse Darts Bond.
+                    </p>
+                </div>
+                
+                <div class="scroll-reveal glass-card rounded-3xl p-8 hover:glow-border transition-all duration-300 group" style="transition-delay: 100ms;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-700/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="circle-dot" class="w-8 h-8 text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 serif">2 Biljarttafels</h3>
+                    <p class="text-stone-400 leading-relaxed">
+                        Goed onderhouden biljarttafels voor een potje pool of snooker. Perfect voor een ontspannen avond met vrienden.
+                    </p>
+                </div>
+                
+                <div class="scroll-reveal glass-card rounded-3xl p-8 hover:glow-border transition-all duration-300 group" style="transition-delay: 200ms;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-700/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="music" class="w-8 h-8 text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 serif">Achtergrondmuziek</h3>
+                    <p class="text-stone-400 leading-relaxed">
+                        Altijd de juiste sfeermuziek op de achtergrond. Niet te hard, precies goed voor een gezellig praatje.
+                    </p>
+                </div>
+                
+                <div class="scroll-reveal glass-card rounded-3xl p-8 hover:glow-border transition-all duration-300 group">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-700/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="beer" class="w-8 h-8 text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 serif">Jupiler & Whisky</h3>
+                    <p class="text-stone-400 leading-relaxed">
+                        Verfrissend Jupiler bier van de tap en een selectie whisky's voor de liefhebber. Proost op een goede avond!
+                    </p>
+                </div>
+                
+                <div class="scroll-reveal glass-card rounded-3xl p-8 hover:glow-border transition-all duration-300 group" style="transition-delay: 100ms;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-700/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="users" class="w-8 h-8 text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 serif">Vriendelijke Sfeer</h3>
+                    <p class="text-stone-400 leading-relaxed">
+                        Een echt bruin café waar iedereen welkom is. Of je nu komt voor de sport of alleen voor een drankje.
+                    </p>
+                </div>
+                
+                <div class="scroll-reveal glass-card rounded-3xl p-8 hover:glow-border transition-all duration-300 group" style="transition-delay: 200ms;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-700/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="clock" class="w-8 h-8 text-amber-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3 serif">Tot 00:00 Open</h3>
+                    <p class="text-stone-400 leading-relaxed">
+                        Maandag t/m zondag geopend vanaf 14:00. Genoeg tijd voor een uitgebreide avond biljarten of darten.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Ons <span class="text-gradient">Menu</span></h2>
+                <p class="text-stone-400 text-lg">Drankjes om de avond mee te beginnen</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="scroll-reveal glass-card rounded-3xl p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="beer" class="w-6 h-6 text-amber-400"></i>
+                        <h3 class="text-2xl font-bold text-white serif">Bier & Tap</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Jupiler</div>
+                                <div class="text-stone-500 text-sm">Vers van de tap</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€3,50</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Jupiler 0.0%</div>
+                                <div class="text-stone-500 text-sm">Alcoholvrij</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€3,00</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Speciaalbier</div>
+                                <div class="text-stone-500 text-sm">Wisselend aanbod</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€4,50</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Radler / Shandy</div>
+                                <div class="text-stone-500 text-sm">Citroen of grapefruit</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€3,50</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-reveal glass-card rounded-3xl p-8" style="transition-delay: 100ms;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="wine" class="w-6 h-6 text-amber-400"></i>
+                        <h3 class="text-2xl font-bold text-white serif">Sterke Drank</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Whisky</div>
+                                <div class="text-stone-500 text-sm">Diverse topmerken</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€5,00+</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Jenever</div>
+                                <div class="text-stone-500 text-sm">Jonge of oude</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€3,00</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Vieux / Cognac</div>
+                                <div class="text-stone-500 text-sm">Voor de fijnproever</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€4,50</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Likeuren</div>
+                                <div class="text-stone-500 text-sm">Amaretto, Baileys, etc.</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€4,00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-reveal glass-card rounded-3xl p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="glass-water" class="w-6 h-6 text-amber-400"></i>
+                        <h3 class="text-2xl font-bold text-white serif">Fris & Mix</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Frisdrank</div>
+                                <div class="text-stone-500 text-sm">Coca-Cola, Fanta, Sprite</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€2,50</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Bitter Lemon / Tonic</div>
+                                <div class="text-stone-500 text-sm">Perfect voor een mixer</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€2,50</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Red Bull</div>
+                                <div class="text-stone-500 text-sm">Energy drink</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€3,00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-reveal glass-card rounded-3xl p-8" style="transition-delay: 100ms;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="coffee" class="w-6 h-6 text-amber-400"></i>
+                        <h3 class="text-2xl font-bold text-white serif">Warme Dranken</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Koffie</div>
+                                <div class="text-stone-500 text-sm">Vers gezet</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€2,50</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Thee</div>
+                                <div class="text-stone-500 text-sm">Verschillende smaken</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€2,50</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center py-3">
+                            <div>
+                                <div class="text-white font-medium">Irish Coffee</div>
+                                <div class="text-stone-500 text-sm">Met whisky en slagroom</div>
+                            </div>
+                            <span class="text-amber-400 font-semibold">€6,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-stone-500 text-sm italic">* Prijzen indicatief en onder voorbehoud. Vraag naar ons volledige aanbod aan de bar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews -->
+    <section id="reviews" class="py-24 bg-stone-900/50 relative">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Wat gasten <span class="text-gradient">zeggen</span></h2>
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <div class="flex star-rating">
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                        <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                        <i data-lucide="star" class="w-6 h-6 fill-current opacity-50"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-white ml-2">4.3</span>
+                    <span class="text-stone-400">/ 5 (104 reviews)</span>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="scroll-reveal review-card glass-card rounded-2xl p-6">
+                    <div class="flex star-rating mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-stone-300 mb-6 italic leading-relaxed">"Goed adres lekker rustig fijn om te biljarten, goede achtergrond muziek."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center text-white font-bold text-sm">G</div>
+                        <div>
+                            <div class="text-white font-medium text-sm">Google Gebruiker</div>
+                            <div class="text-stone-500 text-xs">5 sterren review</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-reveal review-card glass-card rounded-2xl p-6" style="transition-delay: 100ms;">
+                    <div class="flex star-rating mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-stone-300 mb-6 italic leading-relaxed">"Gezellige plek voor een drankje en een praatje. Altijd welkom en de eigenaren zijn super vriendelijk."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center text-white font-bold text-sm">L</div>
+                        <div>
+                            <div class="text-white font-medium text-sm">Lokale Gast</div>
+                            <div class="text-stone-500 text-xs">5 sterren review</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-reveal review-card glass-card rounded-2xl p-6" style="transition-delay: 200ms;">
+                    <div class="flex star-rating mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current opacity-30"></i>
+                    </div>
+                    <p class="text-stone-300 mb-6 italic leading-relaxed">"Leuk cafe met vriendelijke eigenaren. Perfect voor een avondje darten met vrienden!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center text-white font-bold text-sm">D</div>
+                        <div>
+                            <div class="text-white font-medium text-sm">Dart Liefhebber</div>
+                            <div class="text-stone-500 text-xs">4 sterren review</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center scroll-reveal">
+                <a href="https://goo.gl/maps/OranjestadBreda" target="_blank" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    Bekijk alle 104 reviews op Google Maps
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Route -->
+    <section id="contact" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div class="scroll-reveal">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                        Kom je <span class="text-gradient">langs?</span>
+                    </h2>
+                    <p class="text-stone-400 text-lg mb-8">
+                        We zijn gelegen in de gezellige wijk de Belcrum, makkelijk bereikbaar en altijd in voor een praatje.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="map-pin" class="w-6 h-6 text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Adres</h4>
+                                <p class="text-stone-400">Terheijdenseweg 70, 70A<br>4816 AA Breda<br>Belcrum</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="clock" class="w-6 h-6 text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Openingstijden</h4>
+                                <p class="text-stone-400">Maandag - Zondag<br>14:00 - 00:00</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="phone" class="w-6 h-6 text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Telefoon</h4>
+                                <a href="tel:+31765875905" class="text-stone-400 hover:text-amber-400 transition-colors">076 587 5905</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="euro" class="w-6 h-6 text-amber-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Prijsindicatie</h4>
+                                <p class="text-stone-400">€10 - €20 per persoon<br>Ter plaatse eten beschikbaar</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10 flex flex-wrap gap-4">
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=Terheijdenseweg+70,+4816+AA+Breda" target="_blank" class="px-8 py-4 bg-gradient-to-r from-amber-600 to-orange-700 text-white rounded-full font-semibold hover:shadow-xl hover:shadow-amber-500/25 transition-all transform hover:scale-105 flex items-center gap-2">
+                            <i data-lucide="navigation" class="w-5 h-5"></i>
+                            Plan Route
+                        </a>
+                        <a href="tel:+31765875905" class="px-8 py-4 border border-stone-700 text-stone-300 rounded-full font-semibold hover:border-amber-500/50 hover:text-amber-400 transition-all flex items-center gap-2">
+                            <i data-lucide="phone" class="w-5 h-5"></i>
+                            Bel Nu
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="scroll-reveal relative">
+                    <div class="aspect-square lg:aspect-auto lg:h-full min-h-[400px] rounded-3xl overflow-hidden glass-card relative map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2478.123!2d4.758!3d51.595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c6a8a8a8a8a8a8%3A0x1234567890abcdef!2sTerheijdenseweg+70%2C+4816+AA+Breda!5e0!3m2!1snl!2snl!4v1234567890" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0; filter: invert(90%) hue-rotate(180deg) contrast(1.1);" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="absolute inset-0 w-full h-full">
+                        </iframe>
+                        <div class="absolute bottom-4 left-4 right-4 glass-card rounded-xl p-4 z-10">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-white font-semibold">Oranjestad</div>
+                                    <div class="text-stone-400 text-sm">Terheijdenseweg 70, Breda</div>
+                                </div>
+                                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center">
+                                    <i data-lucide="navigation" class="w-5 h-5 text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-stone-800 bg-stone-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center">
+                        <i data-lucide="target" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold serif text-white">Oranjestad</span>
+                </div>
+                
+                <div class="flex items-center gap-6 text-stone-500 text-sm">
+                    <span>Terheijdenseweg 70, Breda</span>
+                    <span>•</span>
+                    <span>076 587 5905</span>
+                    <span>•</span>
+                    <span>Geopend tot 00:00</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center text-stone-400 hover:bg-amber-500/20 hover:text-amber-400 transition-all">
+                        <i data-lucide="facebook" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center text-stone-400 hover:bg-amber-500/20 hover:text-amber-400 transition-all">
+                        <i data-lucide="instagram" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-8 border-t border-stone-800 text-center text-stone-600 text-sm">
+                <p> Dart- en Biljartcafé Oranjestad. Alle rechten voorbehouden.</p>
+                <p class="mt-2">Niet aangesloten bij specifieke merken. Prijzen en openingstijden onder voorbehoud.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-stone-950/90', 'backdrop-blur-lg', 'shadow-lg');
+            } else {
+                navbar.classList.remove('bg-stone-950/90', 'backdrop-blur-lg', 'shadow-lg');
+            }
+        });
+        
+        // Scroll reveal animation
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+        
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.floating');
+            parallaxElements.forEach((el, index) => {
+                const speed = 0.5 + (index * 0.1);
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
